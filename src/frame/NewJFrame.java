@@ -6,12 +6,12 @@
 
 package frame;
 
-import static com.googlecode.javacv.cpp.opencv_contrib.*;
-import com.googlecode.javacv.cpp.opencv_core;
-import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_8U;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
-import static com.googlecode.javacv.cpp.opencv_imgproc.CV_BGR2GRAY;
-import static com.googlecode.javacv.cpp.opencv_imgproc.cvCvtColor;
+import static org.bytedeco.javacpp.opencv_contrib.*;
+import org.bytedeco.javacpp.opencv_core;
+import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
+import static org.bytedeco.javacpp.opencv_highgui.cvLoadImage;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
+import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -437,7 +437,7 @@ public class NewJFrame extends javax.swing.JFrame {
             label = Integer.parseInt(image.getName().split("\\-")[0]);
             grayImg = opencv_core.IplImage.create(img.width(), img.height(), IPL_DEPTH_8U, 1);
             cvCvtColor(img, grayImg, CV_BGR2GRAY);
-            images.put(counter, grayImg);
+            images.put(counter, (Mat)grayImg);
             labels[counter] = label;
             counter++;
         }
