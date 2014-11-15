@@ -7,7 +7,7 @@
 package frame;
 
 import static com.googlecode.javacv.cpp.opencv_contrib.*;
-import com.googlecode.javacv.cpp.opencv_core;
+import com.googlecode.javacv.cpp.opencv_core.*;
 import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_8U;
 import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_BGR2GRAY;
@@ -417,7 +417,7 @@ public class NewJFrame extends javax.swing.JFrame {
     public class FaceRecognize {
    
         String trainingDir = "E:\\TrainImage";//
-        opencv_core.IplImage testImage = cvLoadImage("E:\\ps_low1.jpg");//
+        IplImage testImage = cvLoadImage("E:\\ps_low1.jpg");//
         FilenameFilter jpgFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".jpg");
@@ -425,24 +425,24 @@ public class NewJFrame extends javax.swing.JFrame {
         };
         File root = new File(trainingDir);
         File[] imageFiles = root.listFiles(jpgFilter);
-        opencv_core.MatVector images = new opencv_core.MatVector(imageFiles.length);
+        MatVector images = new MatVector(imageFiles.length);
         int[] labels = new int[imageFiles.length];
         int counter = 0;
         int label;
-        opencv_core.IplImage img;
-        opencv_core.IplImage grayImg;
+        IplImage img;
+        IplImage grayImg;
         void face(){
         for (File image : imageFiles) {
             img = cvLoadImage(image.getAbsolutePath());
             label = Integer.parseInt(image.getName().split("\\-")[0]);
-            grayImg = opencv_core.IplImage.create(img.width(), img.height(), IPL_DEPTH_8U, 1);
+            grayImg = IplImage.create(img.width(), img.height(), IPL_DEPTH_8U, 1);
             cvCvtColor(img, grayImg, CV_BGR2GRAY);
             images.put(counter, grayImg);
             labels[counter] = label;
             counter++;
         }
         }
-            opencv_core.IplImage greyTestImage = opencv_core.IplImage.create(testImage.width(), testImage.height(), IPL_DEPTH_8U, 1);
+            IplImage greyTestImage = IplImage.create(testImage.width(), testImage.height(), IPL_DEPTH_8U, 1);
     }
    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
