@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package testjavaface;
+package frame;
 
 import static com.googlecode.javacv.cpp.opencv_contrib.*;
 import com.googlecode.javacv.cpp.opencv_core;

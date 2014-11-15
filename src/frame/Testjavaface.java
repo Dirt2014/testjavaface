@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package testjavaface;
+package frame;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
