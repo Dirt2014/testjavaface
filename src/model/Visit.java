@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package bean;
+package model;
 
 /**
  *
@@ -14,6 +14,7 @@ public class Visit {
     int studentID;
     long date;
     String category;
+    int solved;
     
     public int getStudentID() {
         return studentID;
@@ -37,5 +38,13 @@ public class Visit {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+    
+    public int getSolved() {
+        return solved;
+    }
+
+    public void setSolved(int solved) {
+        this.solved = solved;
     }
 }

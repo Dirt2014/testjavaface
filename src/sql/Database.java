@@ -13,14 +13,8 @@ package sql;
  */
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Calendar;
-import static java.util.Calendar.*;
-import java.util.GregorianCalendar;
 import java.util.Properties;
-
-
-
 
 public class Database {
     public static Connection conn = null;
