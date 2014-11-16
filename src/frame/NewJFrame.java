@@ -437,7 +437,7 @@ public class NewJFrame extends javax.swing.JFrame {
             label = Integer.parseInt(image.getName().split("\\-")[0]);
             grayImg = opencv_core.IplImage.create(img.width(), img.height(), IPL_DEPTH_8U, 1);
             cvCvtColor(img, grayImg, CV_BGR2GRAY);
-            images.put(counter, (Mat)grayImg);
+            images.put(counter, grayImg);
             labels[counter] = label;
             counter++;
         }
