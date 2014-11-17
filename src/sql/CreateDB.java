@@ -6,18 +6,16 @@ package sql;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author fuyun
  */
-
 import java.sql.*;
 import java.util.Calendar;
 import java.util.Properties;
 
-
 public class CreateDB {
+
     //static String dbURL = "jdbc:derby:faceDB;create=true;user=fan;password=fan";
     static Connection conn = null;
     //static Statement stmt = null;
@@ -40,8 +38,8 @@ public class CreateDB {
                     + ";create=true", props);
             conn.setAutoCommit(false);
             s = conn.createStatement();
-            s.executeQuery("DROP table student");
-            s.executeQuery("DROP table visit");
+//            s.executeQuery("DROP table student");
+//            s.executeQuery("DROP table visit");
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -56,7 +54,7 @@ public class CreateDB {
                     + "Nationalities varchar(40), primary key(StudentID))");
 
         } catch (SQLException e) {
-            //e.printStackTrace();
+            System.out.println("Table student already exists.");
         }
 
         try {
@@ -85,36 +83,35 @@ public class CreateDB {
                     psInsert.setInt(5, age);
                     int index6 = (int) (Math.random() * Nationalities.length);
                     psInsert.setString(6, Nationalities[index6]);
-                    
+
                     psInsert.executeUpdate();
                     conn.commit();
                 }
             }
         } catch (SQLException e) {
-            //e.printStackTrace();
+            System.out.println("Table student doesn't exist.");
         }
 
-        
         //table visit
         try {
             s2 = conn.createStatement();
             s2.executeUpdate("create table visit(VisitID int, StudentID int, "
                     + "date date, category varchar(40),solved int)");
-            //s2.execute("create table visit(VisitID int, StudentID int, date Long(40), category varchar(40), primary key(VisitID), foreign key(StudentID))");
+            conn.commit();
         } catch (SQLException e) {
-            //e.printStackTrace();
+            System.out.println("Table visit already exists.");
         }
 
         try {
             s2 = conn.createStatement();
             //s2.execute("DROP TABLE VISIT");
+            //conn.commit();
             rs = s2.executeQuery("SELECT * FROM visit");
             conn.commit();
 
             if (!rs.next()) {
                 psInsert = conn.prepareStatement("insert into visit values (?, ?, ?, ?, ?)");
                 String[] Categories = {"stapler", "tuition fee", "complaints", "collect assignments", "meet people"};
-                //SimpleDateFormat sdf = new SimpleDateFormat("yyyy, MMM, dd");
 
                 for (int i = 1; i < 1001; i++) {
                     psInsert.setInt(1, i);
@@ -126,24 +123,26 @@ public class CreateDB {
                     calender.set(2014, 12, 31);
                     java.util.Date calender2 = calender.getTime();
                     java.util.Date calendarUtil = randomDate(calender1, calender2);
-                    java.sql.Date calenderSql= new java.sql.Date(calendarUtil.getTime());
+                    java.sql.Date calenderSql = new java.sql.Date(calendarUtil.getTime());
                     psInsert.setDate(3, calenderSql);
                     int index4 = (int) (Math.random() * Categories.length);
                     psInsert.setString(4, Categories[index4]);
-                    double rd=Math.random();
+                    double rd = Math.random();
                     int solved;
                     //solved=0 means unsolved; solved=1 means solved.
-                    if(rd<0.5)
-                        solved=0;
-                    else
-                        solved=1;
+                    if (rd < 0.5) {
+                        solved = 0;
+                    } else {
+                        solved = 1;
+                    }
                     psInsert.setInt(5, solved);
                     psInsert.executeUpdate();
                 }
                 conn.commit();
             }
+
         } catch (SQLException ex) {
-            //ex.printStackTrace();
+            System.out.println("Table visit doesn't exist.");
         }
         shutdown();
     }
@@ -164,6 +163,7 @@ public class CreateDB {
 
     /**
      * random is the method to generate the value in the begin and end range
+     *
      * @param begin the minimum value of the range
      * @param end the maximum value of the range
      * @return
@@ -179,7 +179,7 @@ public class CreateDB {
 
     public static void shutdown() {
         try {
-            if (s != null && s2!=null) {
+            if (s != null && s2 != null) {
                 s.close();
                 s2.close();
             }
@@ -192,28 +192,26 @@ public class CreateDB {
         }
     }
 
-    public static Calendar randomDateBetweenMinAndMax(){
+    public static Calendar randomDateBetweenMinAndMax() {
         Calendar calendar = Calendar.getInstance();
         //注意月份要减去1
-        calendar.set(2000,11,31);
+        calendar.set(2000, 11, 31);
         calendar.getTime().getTime();
         //根据需求，这里要将时分秒设置为0
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.SECOND, 0);
         long min = calendar.getTime().getTime();
-        calendar.set(2014,11,12);
-        calendar.set(Calendar.HOUR_OF_DAY,0);
-        calendar.set(Calendar.MINUTE,0);
-        calendar.set(Calendar.SECOND,0);
+        calendar.set(2014, 11, 12);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         calendar.getTime().getTime();
         long max = calendar.getTime().getTime();
         //得到大于等于min小于max的double值
-        double randomDate = Math.random()*(max-min)+min;
+        double randomDate = Math.random() * (max - min) + min;
         //将double值舍入为整数，转化成long类型
         calendar.setTimeInMillis(Math.round(randomDate));
         return calendar;
     }
 }
-
-

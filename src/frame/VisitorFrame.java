@@ -3,6 +3,9 @@ package frame;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +23,12 @@ public class VisitorFrame extends javax.swing.JFrame {
      */
     public VisitorFrame() {
         initComponents();
+        resultTable.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[10][4],
+                new String[]{
+                    "No.", "Date", "Category", "Solved"
+                }
+        ));
         this.setVisible(true);
         this.setLocationRelativeTo(null);
 
@@ -37,13 +46,13 @@ public class VisitorFrame extends javax.swing.JFrame {
         toDateComboBox.setSelectedIndex(day - 1);
     }
 
-    public String getFromTime() {
-        int fromYear = 2014 - fromYearComboBox.getSelectedIndex();
-        int fromMonth = fromMonthComboBox.getSelectedIndex();
-        int fromDate = 1 + fromDateComboBox.getSelectedIndex();
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(fromYear, fromMonth, fromDate);
+    public String getCalTime(Calendar cal) {
+//        int fromYear = 2014 - fromYearComboBox.getSelectedIndex();
+//        int fromMonth = fromMonthComboBox.getSelectedIndex();
+//        int fromDate = 1 + fromDateComboBox.getSelectedIndex();
+//
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(fromYear, fromMonth, fromDate);
 
         String strdate = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -66,19 +75,27 @@ public class VisitorFrame extends javax.swing.JFrame {
         return strdate;
     }
 
-    public String getToTime() {
-        int toYear = 2014 - toYearComboBox.getSelectedIndex();
-        int toMonth = 1 + toMonthComboBox.getSelectedIndex();
-        int toDate = 1 + toDateComboBox.getSelectedIndex();
+//    public String getToTime(Calendar cal) {
+////        int toYear = 2014 - toYearComboBox.getSelectedIndex();
+////        int toMonth = 1 + toMonthComboBox.getSelectedIndex();
+////        int toDate = 1 + toDateComboBox.getSelectedIndex();
+//////        Calendar cal = Calendar.getInstance();
+////        cal.set(toYear, toMonth, toDate);
+//
+//        String strdate = null;
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        if (cal != null) {
+//            strdate = sdf.format(cal.getTime());
+//        }
+//        return strdate;
+//    }
+    public Calendar getCalendar(JComboBox yearBox, JComboBox monthBox, JComboBox dateBox) {
+        int toYear = 2014 - yearBox.getSelectedIndex();
+        int toMonth = monthBox.getSelectedIndex();
+        int toDate = 1 + dateBox.getSelectedIndex();
         Calendar cal = Calendar.getInstance();
         cal.set(toYear, toMonth, toDate);
-
-        String strdate = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (cal != null) {
-            strdate = sdf.format(cal.getTime());
-        }
-        return strdate;
+        return cal;
     }
 
     /**
@@ -130,6 +147,7 @@ public class VisitorFrame extends javax.swing.JFrame {
         fromMonthComboBox.setName("visitorFromMonthCombobox"); // NOI18N
 
         fromDateComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        fromDateComboBox.setSelectedIndex(1);
         fromDateComboBox.setName("visitorFromDayCombobox"); // NOI18N
         fromDateComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -212,6 +230,7 @@ public class VisitorFrame extends javax.swing.JFrame {
         toMonthComboBox.setName("visitorToMonthCombobox"); // NOI18N
 
         toDateComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        toDateComboBox.setSelectedIndex(1);
         toDateComboBox.setName("visitorToDayCombobox"); // NOI18N
         toDateComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -347,21 +366,21 @@ public class VisitorFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(14, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(dateFromPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateToPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(categoryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))
+                        .addGap(8, 8, 8))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -386,26 +405,31 @@ public class VisitorFrame extends javax.swing.JFrame {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
         //pass studentID, fromDate, toDate, category index to SearchStudent and search in database
-        sql.SearchStudent search = new sql.SearchStudent(1);
-        resultTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[search.getVisitList().size()][4],
-                new String[]{
-                    "No.", "Date", "Category", "Solved"
+        Calendar fromCal = getCalendar(fromYearComboBox, fromMonthComboBox, fromDateComboBox);
+        Calendar toCal = getCalendar(toYearComboBox, toMonthComboBox, toDateComboBox);
+        if (fromCal.compareTo(toCal) > 0) {
+            JOptionPane.showMessageDialog(dateFromPanel, "End date can't be earlier than start date!");
+        } else {
+            String fromCalStr = getCalTime(fromCal);
+            String toCalStr = getCalTime(toCal);
+            sql.SearchStudent search = new sql.SearchStudent(1,fromCalStr,toCalStr);
+            resultTable.setModel(new javax.swing.table.DefaultTableModel(
+                    new Object[search.getVisitList().size()][4],
+                    new String[]{
+                        "No.", "Date", "Category", "Solved"
+                    }
+            ));
+            for (int i = 0; i < search.getVisitList().size(); i++) {
+                resultTable.setValueAt(i + 1, i, 0);
+                resultTable.setValueAt(search.getVisitList().get(i).getDate(), i, 1);
+                resultTable.setValueAt(search.getVisitList().get(i).getCategory(), i, 2);
+                if (search.getVisitList().get(i).getSolved() == 0) {
+                    resultTable.setValueAt("Unsolved", i, 3);
+                } else {
+                    resultTable.setValueAt("Solved", i, 3);
                 }
-        ));
-        for (int i = 0; i < search.getVisitList().size(); i++) {
-            resultTable.setValueAt(i + 1, i, 0);
-            resultTable.setValueAt(search.getVisitList().get(i).getDate(), i, 1);
-            resultTable.setValueAt(search.getVisitList().get(i).getCategory(), i, 2);
-            if (search.getVisitList().get(i).getSolved() == 0) {
-                resultTable.setValueAt("Unsolved", i, 3);
-            } else {
-                resultTable.setValueAt("Solved", i, 3);
             }
         }
-//        System.out.println(this.getFromTime());
-//        System.out.println(this.getToTime());
-        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
@@ -463,6 +487,7 @@ public class VisitorFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VisitorFrame().setVisible(true);
+
                 sql.CreateDB createdb = new sql.CreateDB();
                 createdb.CreateDB();
             }

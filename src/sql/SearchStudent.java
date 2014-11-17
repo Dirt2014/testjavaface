@@ -35,7 +35,7 @@ public class SearchStudent {
     //flag is used to check whether this student has visit history
     public boolean flag = false;
 
-    public SearchStudent(int ID) {
+    public SearchStudent(int ID, String startDate, String endDate) {
         //receive the studentID, fromDate, toDate and category index from VisitorFrame
         //search database
         //store the result in arraylist and pass to VisitorFrame
@@ -43,12 +43,12 @@ public class SearchStudent {
         try {
             createdb.createConnection();
             stmt = conn.createStatement();
-            ResultSet results = stmt.executeQuery("SELECT * FROM visit WHERE studentID=" + ID);
+            String selectSql = "SELECT * FROM VISIT WHERE (StudentID=" + ID+") AND (DATE BETWEEN '"+startDate+"' AND '"+endDate+"')";
+            ResultSet results = stmt.executeQuery(selectSql);
 
             while (results.next()) {
-                //int id = results.getInt(1);
                 flag = true;
-                Date date = results.getDate(3);
+                Date date = results.getDate("date");
                 String category = results.getString(4);
                 int solved = results.getInt(5);
 
