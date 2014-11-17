@@ -5,7 +5,6 @@
  */
 package sql;
 
-import static sql.Database.*;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.Properties;
@@ -16,7 +15,17 @@ import java.util.Properties;
  */
 public class SearchStudent {
 
-    String dbName = "FaceDB";
+    public static Connection conn = null;
+    PreparedStatement psInsert;
+    PreparedStatement psUpdate;
+    Statement s;
+    Statement s1;
+    Statement s2;
+    Statement s3;
+    Statement s4;
+    ResultSet rs = null;
+    Properties props = new Properties();
+    String dbName = "FaceRecognizeDB";
 
     public SearchStudent() {
 
@@ -28,6 +37,28 @@ public class SearchStudent {
         //receive the studentID, fromDate, toDate and category index from VisitorFrame
         //search database
         //store the result in arraylist and pass to VisitorFrame
+    }
+
+    public int getFrequency(Calendar date1, Calendar date2, String category, String gender){
+        int frequency = 0;
+
+        try{
+            conn = DriverManager.getConnection("jdbc:derby"+dbName+"create = false"+props);
+            s1 = conn.createStatement();
+            rs = s1.executeQuery("SELECT COUNT(visitID) AS frequency FROM visit where date>"+date1.getTime().getTime()+
+                    "AND date<"+date2.getTime().getTime());
+
+            conn.commit();
+
+            frequency = rs.getInt("frequency");
+            System.out.println("frequency");
+
+        }catch(SQLException ex){
+
+        }
+
+        return frequency;
+
     }
 
     public void close() throws SQLException {
