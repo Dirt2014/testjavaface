@@ -32,9 +32,9 @@ public class Database {
     Properties props = new Properties();
     String dbName = "FaceRecognizeDB";
 
-    public static void main(String args[]) {
-        Database db = new Database();
-    }
+//    public static void main(String args[]) {
+//        Database db = new Database();
+//    }
 
 
     public Database() {
@@ -104,23 +104,23 @@ public class Database {
             e.printStackTrace();
         }
 
-        try{
-            s1 = conn.createStatement();
-            rs = s1.executeQuery("SELECT * FROM student ");
-            conn.commit();
-
-            while (rs.next()) {
-                System.out.print(rs.getInt(1));
-                System.out.print(rs.getString(2));
-                System.out.print(rs.getString(3));
-                System.out.print(rs.getString(4));
-                System.out.print(rs.getInt(5));
-                System.out.println(rs.getString(6));
-            }
-
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
+//        try{
+//            s1 = conn.createStatement();
+//            rs = s1.executeQuery("SELECT * FROM student ");
+//            conn.commit();
+//
+//            while (rs.next()) {
+//                System.out.print(rs.getInt(1));
+//                System.out.print(rs.getString(2));
+//                System.out.print(rs.getString(3));
+//                System.out.print(rs.getString(4));
+//                System.out.print(rs.getInt(5));
+//                System.out.println(rs.getString(6));
+//            }
+//
+//        }catch(SQLException e){
+//            e.printStackTrace();
+//        }
 
 
         //table passenger
@@ -164,24 +164,24 @@ public class Database {
 
             }
         } catch (SQLException ex) {
-            System.out.print("insert visit");
+
             ex.printStackTrace();
         }
-        try{
-            s = conn.createStatement();
-            rs = s.executeQuery("SELECT * FROM visit ");
-            conn.commit();
-
-            while (rs.next()) {
-                System.out.print(rs.getInt(1));
-                System.out.print(rs.getInt(2));
-                System.out.print(rs.getDouble(3));
-                System.out.println(rs.getString(4));
-            }
-
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
+//        try{
+//            s = conn.createStatement();
+//            rs = s.executeQuery("SELECT * FROM visit ");
+//            conn.commit();
+//
+//            while (rs.next()) {
+//                System.out.print(rs.getInt(1));
+//                System.out.print(rs.getInt(2));
+//                System.out.print(rs.getDouble(3));
+//                System.out.println(rs.getString(4));
+//            }
+//
+//        }catch(SQLException e){
+//            e.printStackTrace();
+//        }
     }
 
 
