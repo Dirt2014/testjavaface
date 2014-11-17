@@ -19,30 +19,22 @@ import java.util.Properties;
 
 
 
-public class Database {
-    public static Connection conn = null;
+public class CreateDB {
+    //static String dbURL = "jdbc:derby:faceDB;create=true;user=fan;password=fan";
+    static Connection conn = null;
+    //static Statement stmt = null;
+    ResultSet rs = null;
     PreparedStatement psInsert;
     PreparedStatement psUpdate;
-    Statement s;
-    Statement s1;
-    Statement s2;
-    Statement s3;
-    Statement s4;
-    ResultSet rs = null;
-    Properties props = new Properties();
-    String dbName = "FaceRecognizeDB";
+    static Statement s;
+    //static Statement s1;
+    static Statement s2;
+//    static Statement s3;
+//    static Statement s4;
+    static Properties props = new Properties();
+    static String dbName = "FaceRecognizeDB";
 
-//    public static void main(String args[]) {
-//        Database db = new Database();
-//    }
-
-
-    public Database() {
-            /*
-             * This connection specifies create=true in the connection URL to
-             * cause the database to be created when connecting for the first
-             * time. 
-             */
+    public static void createConnection() {
         props.put("user", "");
         props.put("password", "");
         try {
@@ -51,18 +43,19 @@ public class Database {
             conn.setAutoCommit(false);
             s = conn.createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
+    }
 
-
-        // We create a table... table cruise
+    public void CreateDB() {
+        // table student
+        createConnection();
         try {
-
             s.executeUpdate("create table student(StudentID int, Name varchar(40), "
                     + "Gender varchar(40), Program varchar(40), Age int, "
                     + "Nationalities varchar(40), primary key(StudentID))");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         try {
@@ -71,16 +64,12 @@ public class Database {
             conn.commit();
 
             if (!rs.next()) {
-
                 psInsert = conn.prepareStatement("insert into student values (?, ?, ?, ?, ?, ?)");
-
-
                 String[] FirstNames = {"Bob", "Jill", "Tom", "Brandon", "Joan", "Ethel", "Albert", "Hpward", "Roy", "Annie", "Alice", "Ruby", "Donald", "Carl", "Bonnie", "Lisa", "Scott", "Sean", "Morgan", "Oliva"};
                 String[] LastNames = {"Matthew", "Nathan", "Aaron", "Zachary", "Jadon", "Matteo", "Harrison", "Titus", "Magnus", "Jax", "Jude", "Dexter", "Sawyer", "Beckett", "Miles", "Land", "Letitia", "Leopold", "Louise", "Lucretia"};
                 String[] Gender = {"Male", "Female"};
                 String[] Programs = {"MISM", "MSPPM", "MSIT"};
                 String[] Nationalities = {"China", "Japan", "USA", "Korea", "Australia", "India"};
-
 
                 for (int i = 1; i < 85; i++) {
                     psInsert.setInt(1, i);
@@ -95,95 +84,78 @@ public class Database {
                     psInsert.setInt(5, age);
                     int index6 = (int) (Math.random() * Nationalities.length);
                     psInsert.setString(6, Nationalities[index6]);
-
+                    
                     psInsert.executeUpdate();
                     conn.commit();
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
-//        try{
-//            s1 = conn.createStatement();
-//            rs = s1.executeQuery("SELECT * FROM student ");
-//            conn.commit();
-//
-//            while (rs.next()) {
-//                System.out.print(rs.getInt(1));
-//                System.out.print(rs.getString(2));
-//                System.out.print(rs.getString(3));
-//                System.out.print(rs.getString(4));
-//                System.out.print(rs.getInt(5));
-//                System.out.println(rs.getString(6));
-//            }
-//
-//        }catch(SQLException e){
-//            e.printStackTrace();
-//        }
-
-
-        //table passenger
+        
+        //table visit
         try {
             s2 = conn.createStatement();
             s2.executeUpdate("create table visit(VisitID int, StudentID int, "
-                    + "date double, category varchar(40))");
+                    + "date double, category varchar(40),solved int)");
             //s2.execute("create table visit(VisitID int, StudentID int, date Long(40), category varchar(40), primary key(VisitID), foreign key(StudentID))");
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         try {
             s2 = conn.createStatement();
+            //s2.execute("DROP TABLE VISIT");
             rs = s2.executeQuery("SELECT * FROM visit");
             conn.commit();
 
             if (!rs.next()) {
-                psInsert = conn.prepareStatement("insert into visit values (?, ?, ?, ?)");
-
-
+                psInsert = conn.prepareStatement("insert into visit values (?, ?, ?, ?, ?)");
                 String[] Categories = {"stapler", "tuition fee", "complaints", "collect assignments", "meet people"};
                 //SimpleDateFormat sdf = new SimpleDateFormat("yyyy, MMM, dd");
-
 
                 for (int i = 1; i < 1001; i++) {
                     psInsert.setInt(1, i);
                     int index2 = (int) (Math.random() * 85);
                     psInsert.setInt(2, index2);
                     Calendar calendar = randomDateBetweenMinAndMax();
-                    psInsert.setDouble(3, (double) calendar.getTime().getTime());
+                    //psInsert.setDouble(3, (double) calendar.getTime().getTime());
+                    psInsert.setLong(3, calendar.getTime().getTime());
                     int index4 = (int) (Math.random() * Categories.length);
                     psInsert.setString(4, Categories[index4]);
+                    double rd=Math.random();
+                    int solved;
+                    //solved=0 means unsolved; solved=1 means solved.
+                    if(rd<0.5)
+                        solved=0;
+                    else
+                        solved=1;
+                    psInsert.setInt(5, solved);
                     psInsert.executeUpdate();
-
                 }
-
-
                 conn.commit();
-
             }
         } catch (SQLException ex) {
-
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
-//        try{
-//            s = conn.createStatement();
-//            rs = s.executeQuery("SELECT * FROM visit ");
-//            conn.commit();
-//
-//            while (rs.next()) {
-//                System.out.print(rs.getInt(1));
-//                System.out.print(rs.getInt(2));
-//                System.out.print(rs.getDouble(3));
-//                System.out.println(rs.getString(4));
-//            }
-//
-//        }catch(SQLException e){
-//            e.printStackTrace();
-//        }
+        shutdown();
     }
 
+    public static void shutdown() {
+        try {
+            if (s != null && s2!=null) {
+                s.close();
+                s2.close();
+            }
+            if (conn != null) {
+                //DriverManager.getConnection(dbURL + ";shutdown=true");
+                conn.close();
+            }
+        } catch (SQLException sqlExcept) {
+
+        }
+    }
 
     public static Calendar randomDateBetweenMinAndMax(){
         Calendar calendar = Calendar.getInstance();
@@ -207,13 +179,6 @@ public class Database {
         calendar.setTimeInMillis(Math.round(randomDate));
         return calendar;
     }
-
-
-
-    public void close() throws SQLException {
-        conn.close();
-    }
-
 }
 
 
