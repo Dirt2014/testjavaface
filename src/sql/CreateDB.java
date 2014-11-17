@@ -17,8 +17,6 @@ import java.util.Calendar;
 import java.util.Properties;
 
 
-
-
 public class CreateDB {
     //static String dbURL = "jdbc:derby:faceDB;create=true;user=fan;password=fan";
     static Connection conn = null;
@@ -42,6 +40,8 @@ public class CreateDB {
                     + ";create=true", props);
             conn.setAutoCommit(false);
             s = conn.createStatement();
+            s.executeQuery("DROP table student");
+            s.executeQuery("DROP table visit");
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -54,6 +54,7 @@ public class CreateDB {
             s.executeUpdate("create table student(StudentID int, Name varchar(40), "
                     + "Gender varchar(40), Program varchar(40), Age int, "
                     + "Nationalities varchar(40), primary key(StudentID))");
+
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -98,7 +99,7 @@ public class CreateDB {
         try {
             s2 = conn.createStatement();
             s2.executeUpdate("create table visit(VisitID int, StudentID int, "
-                    + "date double, category varchar(40),solved int)");
+                    + "date date, category varchar(40),solved int)");
             //s2.execute("create table visit(VisitID int, StudentID int, date Long(40), category varchar(40), primary key(VisitID), foreign key(StudentID))");
         } catch (SQLException e) {
             //e.printStackTrace();
@@ -119,9 +120,14 @@ public class CreateDB {
                     psInsert.setInt(1, i);
                     int index2 = (int) (Math.random() * 85);
                     psInsert.setInt(2, index2);
-                    Calendar calendar = randomDateBetweenMinAndMax();
-                    //psInsert.setDouble(3, (double) calendar.getTime().getTime());
-                    psInsert.setLong(3, calendar.getTime().getTime());
+                    Calendar calender = Calendar.getInstance();
+                    calender.set(2000, 1, 1);
+                    java.util.Date calender1 = calender.getTime();
+                    calender.set(2014, 12, 31);
+                    java.util.Date calender2 = calender.getTime();
+                    java.util.Date calendarUtil = randomDate(calender1, calender2);
+                    java.sql.Date calenderSql= new java.sql.Date(calendarUtil.getTime());
+                    psInsert.setDate(3, calenderSql);
                     int index4 = (int) (Math.random() * Categories.length);
                     psInsert.setString(4, Categories[index4]);
                     double rd=Math.random();
@@ -140,6 +146,35 @@ public class CreateDB {
             //ex.printStackTrace();
         }
         shutdown();
+    }
+
+    public static java.util.Date randomDate(java.util.Date start, java.util.Date end) {
+        try {
+
+            if (start.getTime() >= end.getTime()) {
+                return null;
+            }
+            long date = random(start.getTime(), end.getTime());
+            return new java.util.Date(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * random is the method to generate the value in the begin and end range
+     * @param begin the minimum value of the range
+     * @param end the maximum value of the range
+     * @return
+     */
+    public static long random(long begin, long end) {
+        long rtn = begin + (long) (Math.random() * (end - begin));
+        //execute this function if returns begin and end date
+        if (rtn == begin || rtn == end) {
+            return random(begin, end);
+        }
+        return rtn;
     }
 
     public static void shutdown() {
