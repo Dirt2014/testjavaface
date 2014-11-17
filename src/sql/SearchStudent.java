@@ -48,7 +48,7 @@ public class SearchStudent {
             while (results.next()) {
                 //int id = results.getInt(1);
                 flag = true;
-                double date = results.getDouble(3);
+                Date date = results.getDate(3);
                 String category = results.getString(4);
                 int solved = results.getInt(5);
 

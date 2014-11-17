@@ -1,11 +1,8 @@
 package frame;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -40,24 +37,48 @@ public class VisitorFrame extends javax.swing.JFrame {
         toDateComboBox.setSelectedIndex(day - 1);
     }
 
-    public long getFromTime() {
-        int fromYear = fromYearComboBox.getSelectedIndex();
+    public String getFromTime() {
+        int fromYear = 2014 - fromYearComboBox.getSelectedIndex();
         int fromMonth = fromMonthComboBox.getSelectedIndex();
-        int fromDate = fromDateComboBox.getSelectedIndex();
+        int fromDate = 1 + fromDateComboBox.getSelectedIndex();
 
-        Date date = new Date(fromYear, fromMonth, fromDate);
-        long sec = date.getTime();
-        return sec;
+        Calendar cal = Calendar.getInstance();
+        cal.set(fromYear, fromMonth, fromDate);
+
+        String strdate = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (cal != null) {
+            strdate = sdf.format(cal.getTime());
+        }
+        //String d=fromYear+"-"+fromMonth+"-"+fromDate;
+//        Date d = new Date(fromYear, fromMonth, fromDate);
+//        System.out.println(fromYear);
+//        System.out.println(fromMonth);
+//        System.out.println(fromDate);
+//        long sec = date.getTime();
+//        return sec;
+        // return date;
+
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+//        SimpleDateFormat df = new SimpleDateFormat("yy-mm-dd");
+//        String dateText = df.format(d);
+//        return dateText;
+        return strdate;
     }
 
-    public long getToTime() {
-        int toYear = toYearComboBox.getSelectedIndex();
-        int toMonth = toMonthComboBox.getSelectedIndex();
-        int toDate = toDateComboBox.getSelectedIndex();
+    public String getToTime() {
+        int toYear = 2014 - toYearComboBox.getSelectedIndex();
+        int toMonth = 1 + toMonthComboBox.getSelectedIndex();
+        int toDate = 1 + toDateComboBox.getSelectedIndex();
+        Calendar cal = Calendar.getInstance();
+        cal.set(toYear, toMonth, toDate);
 
-        Date date = new Date(toYear, toMonth, toDate);
-        long sec = date.getTime();
-        return sec;
+        String strdate = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (cal != null) {
+            strdate = sdf.format(cal.getTime());
+        }
+        return strdate;
     }
 
     /**
@@ -364,11 +385,6 @@ public class VisitorFrame extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
-//        System.out.println(getFromTime());
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(getFromTime());
-//        System.out.println(calendar.getTime().getTime());
-        
         //pass studentID, fromDate, toDate, category index to SearchStudent and search in database
         sql.SearchStudent search = new sql.SearchStudent(1);
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -378,24 +394,18 @@ public class VisitorFrame extends javax.swing.JFrame {
                 }
         ));
         for (int i = 0; i < search.getVisitList().size(); i++) {
-//            Date date = new Date();
-//            try {
-//                double dateLong = search.getVisitList().get(i).getDate();
-//                String dateStr = dateLong.toString();
-//                SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
-//                date = format.parse(dateStr);
-//            } catch (ParseException ex) {
-//                Logger.getLogger(VisitorFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            }
             resultTable.setValueAt(i + 1, i, 0);
-            //resultTable.setValueAt(search.getVisitList().get(i).getDate(), i, 1);
+            resultTable.setValueAt(search.getVisitList().get(i).getDate(), i, 1);
             resultTable.setValueAt(search.getVisitList().get(i).getCategory(), i, 2);
-            if(search.getVisitList().get(i).getSolved()==0)
+            if (search.getVisitList().get(i).getSolved() == 0) {
                 resultTable.setValueAt("Unsolved", i, 3);
-            else
+            } else {
                 resultTable.setValueAt("Solved", i, 3);
+            }
         }
-
+//        System.out.println(this.getFromTime());
+//        System.out.println(this.getToTime());
+        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed

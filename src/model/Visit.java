@@ -6,13 +6,15 @@
 
 package model;
 
+import java.sql.Date;
+
 /**
  *
  * @author fanyuting
  */
 public class Visit {
     int studentID;
-    double date;
+    Date date;
     String category;
     int solved;
     
@@ -24,11 +26,11 @@ public class Visit {
         this.studentID = studentID;
     }
 
-    public double getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(double date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
