@@ -41,7 +41,7 @@ public class CreateDB {
             //s.execute("DROP table student");
             //s.execute("DROP table visit");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -54,8 +54,7 @@ public class CreateDB {
                     + "Nationalities varchar(40), url varchar(100), primary key(StudentID))");
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Table student already exists.");
+            System.out.println(e.getMessage());
         }
 
         try {
@@ -97,12 +96,11 @@ public class CreateDB {
         try {
             s2 = conn.createStatement();
             s2.executeUpdate("create table visit(VisitID int, StudentID int, "
-
                     + "date date, category varchar(40),solved int, comments varchar(100))");
 
             conn.commit();
         } catch (SQLException e) {
-            System.out.println("Table visit already exists.");
+            System.out.println(e.getMessage());
         }
 
         try {
@@ -114,7 +112,7 @@ public class CreateDB {
 
             if (!rs.next()) {
                 psInsert = conn.prepareStatement("insert into visit values (?, ?, ?, ?, ?, ?)");
-                String[] Categories = {"stapler", "tuition fee", "complaints", "collect assignments", "meet people", "others"};
+                String[] Categories = {"Stapler", "Tuition fee", "Complaints", "Collect Assignments", "Meet People", "Others"};
 
 
                 for (int i = 1; i < 1001; i++) {
@@ -147,7 +145,7 @@ public class CreateDB {
             }
 
         } catch (SQLException ex) {
-            System.out.println("Table visit doesn't exist.");
+            System.out.println(ex.getMessage());
         }
         shutdown();
     }
@@ -161,7 +159,7 @@ public class CreateDB {
             long date = random(start.getTime(), end.getTime());
             return new java.util.Date(date);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }

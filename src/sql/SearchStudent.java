@@ -63,7 +63,7 @@ public class SearchStudent {
             results.close();
             stmt.close();
         } catch (SQLException sqlExcept) {
-            sqlExcept.printStackTrace();
+            System.out.println(sqlExcept.getMessage());
         }
         createdb.shutdown();
     }
@@ -73,6 +73,7 @@ public class SearchStudent {
         //search database
         //store the result in arraylist and pass to VisitorFrame
         CreateDB createdb = new CreateDB();
+        System.out.println(category);
         try {
             createdb.createConnection();
             stmt = conn.createStatement();
@@ -88,7 +89,7 @@ public class SearchStudent {
                 model.Visit stuVisit = new model.Visit();
                 //stuVisit.setStudentID(ID);
                 stuVisit.setDate(date);
-                //stuVisit.setCategory(category);
+                stuVisit.setCategory(category);
                 stuVisit.setSolved(solved);
                 stuVisit.setComments(comments);
                 stuVisitList.add(stuVisit);

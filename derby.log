@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Tue Nov 18 22:52:58 CST 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0149-c2db-172a-000003e819c0 
-on database directory /Users/jianlin/Documents/Programs/testjavaface/FaceRecognizeDB with class loader sun.misc.Launcher$AppClassLoader@682a0b20 
-Loaded from file:/Users/jianlin/Documents/library/db-derby-10.11.1.1-bin/lib/derby.jar
+Wed Nov 19 02:13:04 CST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0149-c392-4992-000001707858 
+on database directory /Users/fanyuting/NetBeansProjects/testjavaface/FaceRecognizeDB with class loader sun.misc.Launcher$AppClassLoader@6da21389 
+Loaded from file:/Users/fanyuting/db-derby-10.11.1.1-bin/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_05-b13
-user.dir=/Users/jianlin/Documents/Programs/testjavaface
+java.runtime.version=1.7.0_67-b01
+user.dir=/Users/fanyuting/NetBeansProjects/testjavaface
 os.name=Mac OS X
 os.arch=x86_64
 os.version=10.10

@@ -23,6 +23,8 @@ public class VisitorFrame extends javax.swing.JFrame {
      * Creates new form VisitorFrame
      */
     public VisitorFrame(int id) {
+        sql.CreateDB createdb = new sql.CreateDB();
+        createdb.CreateDB();
         studentID=id;
         initComponents();
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -130,9 +132,10 @@ public class VisitorFrame extends javax.swing.JFrame {
         backButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -184,7 +187,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "Stapler", "Tuition Fee", "Complaints", "Collect Assignments", "Meet People", "Comments" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "Stapler", "Tuition Fee", "Complaints", "Collect Assignments", "Meet People", "Others" }));
 
         jLabel3.setText("Category");
 
@@ -226,6 +229,23 @@ public class VisitorFrame extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        resultTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                resultTableMouseEntered(evt);
+            }
+        });
+        resultTable.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                resultTableInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        resultTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                resultTablePropertyChange(evt);
             }
         });
         jScrollPane1.setViewportView(resultTable);
@@ -323,6 +343,13 @@ public class VisitorFrame extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem5.setText("Report Frequency");
+        jMenu1.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Window");
+
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Clear");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -330,15 +357,11 @@ public class VisitorFrame extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu3.add(jMenuItem1);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setText("Back");
-        jMenu1.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu3.setText("Window");
+        jMenu3.add(jMenuItem2);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setText("Close");
@@ -430,7 +453,7 @@ public class VisitorFrame extends javax.swing.JFrame {
             //selectedIndex = 0 means search all cateogries in this date range
             sql.SearchStudent search = new sql.SearchStudent();
             if (categoryComboBox.getSelectedIndex() == 0) {
-                search = new sql.SearchStudent(1, fromCalStr, toCalStr);
+                search = new sql.SearchStudent(studentID, fromCalStr, toCalStr);
                 if (search.getVisitList().size() == 0) {
                     JOptionPane.showMessageDialog(dateFromPanel, "No visit history in this query!");
                 } else {
@@ -454,8 +477,9 @@ public class VisitorFrame extends javax.swing.JFrame {
                     }
                 }
             } else {
-                ArrayList<model.Visit> visitList = search.searchVisitByCategory(1, categoryComboBox.getSelectedItem().toString(), fromCalStr, toCalStr);
-                System.out.println(visitList.size());
+                ArrayList<model.Visit> visitList = search.searchVisitByCategory(studentID, categoryComboBox.getSelectedItem().toString(), fromCalStr, toCalStr);
+//                System.out.println(categoryComboBox.getSelectedItem());
+//                System.out.println(visitList.size());
                 resultTable.setModel(new javax.swing.table.DefaultTableModel(
                         new Object[visitList.size()][5],
                         new String[]{
@@ -465,7 +489,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                 for (int i = 0; i < visitList.size(); i++) {
                     resultTable.setValueAt(i + 1, i, 0);
                     resultTable.setValueAt(visitList.get(i).getDate(), i, 1);
-                    resultTable.setValueAt(categoryComboBox.getSelectedItem().toString(), i, 2);
+                    resultTable.setValueAt(visitList.get(i).getCategory(), i, 2);
                     if (visitList.get(i).getSolved() == 0) {
                         resultTable.setValueAt("Unsolved", i, 3);
                     } else {
@@ -510,6 +534,18 @@ public class VisitorFrame extends javax.swing.JFrame {
         pp.setVisible(true);
         pp.setLocationRelativeTo(null);
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void resultTableInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_resultTableInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_resultTableInputMethodTextChanged
+
+    private void resultTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_resultTablePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_resultTablePropertyChange
+
+    private void resultTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resultTableMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_resultTableMouseEntered
 
     /**
      * @param args the command line arguments
@@ -572,6 +608,7 @@ public class VisitorFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable resultTable;
     private javax.swing.JButton searchButton;
