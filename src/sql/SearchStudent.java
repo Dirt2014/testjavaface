@@ -6,9 +6,9 @@
 package sql;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Properties;
+import java.sql.Date;
+import java.util.*;
+
 import static sql.CreateDB.*;
 
 /**
@@ -35,6 +35,9 @@ public class SearchStudent {
     //flag is used to check whether this student has visit history
     public boolean flag = false;
 
+    public SearchStudent(){
+
+    }
     public SearchStudent(int ID) {
         //receive the studentID, fromDate, toDate and category index from VisitorFrame
         //search database
@@ -70,23 +73,32 @@ public class SearchStudent {
     public ArrayList<model.Visit> getVisitList(){
         return stuVisitList;
     }
-    
-    public int getFrequency(Calendar date1, Calendar date2, String category, String gender) {
+
+    public int getFrequency(java.util.Date date1, java.util.Date date2, String category, String gender){
         int frequency = 0;
-
-        try {
-            conn = DriverManager.getConnection("jdbc:derby" + dbName + "create = false" + props);
+        try{
+            conn = DriverManager.getConnection("jdbc:derby:"+dbName+";create = false", props);
             s1 = conn.createStatement();
-            rs = s1.executeQuery("SELECT COUNT(visitID) AS frequency FROM visit where date>" + date1.getTime().getTime()
-                    + "AND date<" + date2.getTime().getTime());
 
+            psInsert = conn.prepareStatement("SELECT COUNT(visitID) AS frequency " +
+                    "FROM visit LEFT JOIN student ON visit.StudentID = student.StudentID " +
+                    "WHERE (date BETWEEN ? AND ?) AND category=? AND Gender=?");
             conn.commit();
+            java.sql.Date date1Sql= new java.sql.Date(date1.getTime());
+            java.sql.Date date2Sql= new java.sql.Date(date2.getTime());
 
+            psInsert.setDate(1, date1Sql);
+            psInsert.setDate(2, date2Sql);
+            psInsert.setString(3, category);
+            psInsert.setString(4, gender);
+
+            rs =  psInsert.executeQuery();
+
+            rs.next();//default pointer return 0, even if you want to get the first data, you should use .next();
             frequency = rs.getInt("frequency");
-            System.out.println("frequency");
 
-        } catch (SQLException ex) {
-
+        }catch(SQLException ex){
+            ex.printStackTrace();
         }
 
         return frequency;
