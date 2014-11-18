@@ -39,7 +39,7 @@ public class CreateDB {
             conn.setAutoCommit(false);
             s = conn.createStatement();
             //s.execute("DROP table student");
-//            s.execute("DROP table visit");
+            //s.execute("DROP table visit");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,6 +54,7 @@ public class CreateDB {
                     + "Nationalities varchar(40), url varchar(100), primary key(StudentID))");
 
         } catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("Table student already exists.");
         }
 
