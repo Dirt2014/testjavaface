@@ -1,6 +1,7 @@
 package frame;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JComboBox;
@@ -182,7 +183,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "Diploma", "Pick up paper" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "Stapler", "Tuition Fee", "Complaints", "Collect Assignments", "Meet People" }));
 
         jLabel3.setText("Category");
 
@@ -412,23 +413,51 @@ public class VisitorFrame extends javax.swing.JFrame {
         } else {
             String fromCalStr = getCalTime(fromCal);
             String toCalStr = getCalTime(toCal);
-            sql.SearchStudent search = new sql.SearchStudent(1,fromCalStr,toCalStr);
-            resultTable.setModel(new javax.swing.table.DefaultTableModel(
-                    new Object[search.getVisitList().size()][4],
-                    new String[]{
-                        "No.", "Date", "Category", "Solved"
-                    }
-            ));
-            for (int i = 0; i < search.getVisitList().size(); i++) {
-                resultTable.setValueAt(i + 1, i, 0);
-                resultTable.setValueAt(search.getVisitList().get(i).getDate(), i, 1);
-                resultTable.setValueAt(search.getVisitList().get(i).getCategory(), i, 2);
-                if (search.getVisitList().get(i).getSolved() == 0) {
-                    resultTable.setValueAt("Unsolved", i, 3);
+            //selectedIndex = 0 means search all cateogries in this date range
+            sql.SearchStudent search = new sql.SearchStudent();
+            if (categoryComboBox.getSelectedIndex() == 0) {
+                search = new sql.SearchStudent(1, fromCalStr, toCalStr);
+                if (search.getVisitList().size() == 0) {
+                    JOptionPane.showMessageDialog(dateFromPanel, "No visit history in this query!");
                 } else {
-                    resultTable.setValueAt("Solved", i, 3);
+                    resultTable.setModel(new javax.swing.table.DefaultTableModel(
+                            new Object[search.getVisitList().size()][4],
+                            new String[]{
+                                "No.", "Date", "Category", "Solved"
+                            }
+                    ));
+                    for (int i = 0; i < search.getVisitList().size(); i++) {
+                        resultTable.setValueAt(i + 1, i, 0);
+                        resultTable.setValueAt(search.getVisitList().get(i).getDate(), i, 1);
+                        resultTable.setValueAt(search.getVisitList().get(i).getCategory(), i, 2);
+                        if (search.getVisitList().get(i).getSolved() == 0) {
+                            resultTable.setValueAt("Unsolved", i, 3);
+                        } else {
+                            resultTable.setValueAt("Solved", i, 3);
+                        }
+                    }
+                }
+            } else {
+                ArrayList<model.Visit> visitList = search.searchVisitByCategory(1, categoryComboBox.getSelectedItem().toString(), fromCalStr, toCalStr);
+                System.out.println(visitList.size());
+                resultTable.setModel(new javax.swing.table.DefaultTableModel(
+                        new Object[visitList.size()][4],
+                        new String[]{
+                            "No.", "Date", "Category", "Solved"
+                        }
+                ));
+                for (int i = 0; i < visitList.size(); i++) {
+                    resultTable.setValueAt(i + 1, i, 0);
+                    resultTable.setValueAt(visitList.get(i).getDate(), i, 1);
+                    resultTable.setValueAt(categoryComboBox.getSelectedItem().toString(), i, 2);
+                    if (visitList.get(i).getSolved() == 0) {
+                        resultTable.setValueAt("Unsolved", i, 3);
+                    } else {
+                        resultTable.setValueAt("Solved", i, 3);
+                    }
                 }
             }
+
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
