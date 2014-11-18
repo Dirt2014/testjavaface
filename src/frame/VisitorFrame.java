@@ -27,7 +27,7 @@ public class VisitorFrame extends javax.swing.JFrame {
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[10][5],
                 new String[]{
-                    "No.", "Date", "Category", "Solved", "Comment"
+                    "No.", "Date", "Category", "Solved", "Comments"
                 }
         ));
         this.setVisible(true);
@@ -183,7 +183,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "Stapler", "Tuition Fee", "Complaints", "Collect Assignments", "Meet People" }));
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "Stapler", "Tuition Fee", "Complaints", "Collect Assignments", "Meet People", "Comments" }));
 
         jLabel3.setText("Category");
 
@@ -431,7 +431,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                     resultTable.setModel(new javax.swing.table.DefaultTableModel(
                             new Object[search.getVisitList().size()][5],
                             new String[]{
-                                "No.", "Date", "Category", "Solved", "Comment"
+                                "No.", "Date", "Category", "Solved", "Comments"
                             }
                     ));
                     for (int i = 0; i < search.getVisitList().size(); i++) {
@@ -444,7 +444,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                             resultTable.setValueAt("Solved", i, 3);
                         }
                         //System.out.println(search.getVisitList().get(i).getComment()+"NA");
-                        resultTable.setValueAt(search.getVisitList().get(i).getComment(), i, 4);
+                        resultTable.setValueAt(search.getVisitList().get(i).getComments(), i, 4);
                     }
                 }
             } else {
@@ -453,7 +453,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                 resultTable.setModel(new javax.swing.table.DefaultTableModel(
                         new Object[visitList.size()][5],
                         new String[]{
-                            "No.", "Date", "Category", "Solved", "Comment"
+                            "No.", "Date", "Category", "Solved", "Comments"
                         }
                 ));
                 for (int i = 0; i < visitList.size(); i++) {
@@ -466,7 +466,7 @@ public class VisitorFrame extends javax.swing.JFrame {
                         resultTable.setValueAt("Solved", i, 3);
                     }
                     //System.out.println(search.getVisitList().get(i).getComment()+"NA");
-                    resultTable.setValueAt(search.getVisitList().get(i).getComment(), i, 4);
+                    resultTable.setValueAt(search.getVisitList().get(i).getComments(), i, 4);
                 }
             }
 
@@ -492,7 +492,7 @@ public class VisitorFrame extends javax.swing.JFrame {
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[10][5],
                 new String[]{
-                    "No.", "Date", "Category", "Solved", "Comment"
+                    "No.", "Date", "Category", "Solved", "Comments"
                 }
         ));
     }//GEN-LAST:event_clearButtonActionPerformed

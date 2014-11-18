@@ -38,8 +38,8 @@ public class CreateDB {
                     + ";create=true", props);
             conn.setAutoCommit(false);
             s = conn.createStatement();
-//            s.executeQuery("DROP table student");
-//            s.executeQuery("DROP table visit");
+            //s.execute("DROP table student");
+//            s.execute("DROP table visit");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class CreateDB {
         try {
             s.executeUpdate("create table student(StudentID int, Name varchar(40), "
                     + "Gender varchar(40), Program varchar(40), Age int, "
-                    + "Nationalities varchar(40), primary key(StudentID))");
+                    + "Nationalities varchar(40), url varchar(100), primary key(StudentID))");
 
         } catch (SQLException e) {
             System.out.println("Table student already exists.");
@@ -63,7 +63,7 @@ public class CreateDB {
             conn.commit();
 
             if (!rs.next()) {
-                psInsert = conn.prepareStatement("insert into student values (?, ?, ?, ?, ?, ?)");
+                psInsert = conn.prepareStatement("insert into student values (?, ?, ?, ?, ?, ?, ?)");
                 String[] FirstNames = {"Bob", "Jill", "Tom", "Brandon", "Joan", "Ethel", "Albert", "Hpward", "Roy", "Annie", "Alice", "Ruby", "Donald", "Carl", "Bonnie", "Lisa", "Scott", "Sean", "Morgan", "Oliva"};
                 String[] LastNames = {"Matthew", "Nathan", "Aaron", "Zachary", "Jadon", "Matteo", "Harrison", "Titus", "Magnus", "Jax", "Jude", "Dexter", "Sawyer", "Beckett", "Miles", "Land", "Letitia", "Leopold", "Louise", "Lucretia"};
                 String[] Gender = {"Male", "Female"};
@@ -83,20 +83,22 @@ public class CreateDB {
                     psInsert.setInt(5, age);
                     int index6 = (int) (Math.random() * Nationalities.length);
                     psInsert.setString(6, Nationalities[index6]);
-
+                    psInsert.setString(7, "E:\\TrainImage\\"+i);
                     psInsert.executeUpdate();
                     conn.commit();
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Table student doesn't exist.");
+            System.out.println(e.getMessage());
         }
 
         //table visit
         try {
             s2 = conn.createStatement();
             s2.executeUpdate("create table visit(VisitID int, StudentID int, "
+
                     + "date date, category varchar(40),solved int, comments varchar(100))");
+
             conn.commit();
         } catch (SQLException e) {
             System.out.println("Table visit already exists.");
@@ -112,6 +114,7 @@ public class CreateDB {
             if (!rs.next()) {
                 psInsert = conn.prepareStatement("insert into visit values (?, ?, ?, ?, ?, ?)");
                 String[] Categories = {"stapler", "tuition fee", "complaints", "collect assignments", "meet people", "others"};
+
 
                 for (int i = 1; i < 1001; i++) {
                     psInsert.setInt(1, i);
