@@ -260,7 +260,7 @@ public class NewJFrame extends javax.swing.JFrame {
 	 System.out.println("Bounding boxes drawn");
 
 	// Save the visualized detection.
-	   String filename = "E:\\haar_detected_webcam_face.jpg";
+	   String filename = "E:\\TestImage\\test.jpg";
 	   Highgui.imwrite(filename, frame);
 	   System.out.println("Writing: " + filename);
 	   webcam.release();
@@ -416,8 +416,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
     public class FaceRecognize {
    
-        String trainingDir = "E:\\TrainImage";//
-        IplImage testImage = cvLoadImage("E:\\ps_low1.jpg");//
+        String trainingDir = "E:\\TrainImage";// store original photo
+        IplImage testImage = cvLoadImage("E:\\TestImage\\test.jpg");// store snap photo
         FilenameFilter jpgFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".jpg");
@@ -459,12 +459,12 @@ public class NewJFrame extends javax.swing.JFrame {
             int b=one.b;
             int c=one.c;
             int d=one.d;
-            String name = "E:\\haar_detected_webcam_face.jpg"; 
+            String name = "E:\\TestImage\\test.jpg"; 
             Imagecut o = new Imagecut(a,b,c,d);
             o.setSrcpath(name);  
-            o.setSubpath("E:\\2.jpg");
+            o.setSubpath("E:\\2.jpg"); // store cut photo
             o.cut() ;
-            UI = new Imagechange("E://2.jpg", "E://", "ps_low1","jpg",10,250); //  height determines scale
+            UI = new Imagechange("E://2.jpg", "E://", "ps_low1","jpg",10,250); //  store inlarge photo  height determines scale
             ss = UI.createThumbnail();
             
             //FaceRecognizer faceRecognizer = createFisherFaceRecognizer();
