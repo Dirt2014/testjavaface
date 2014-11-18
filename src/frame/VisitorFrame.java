@@ -25,9 +25,9 @@ public class VisitorFrame extends javax.swing.JFrame {
     public VisitorFrame() {
         initComponents();
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[10][4],
+                new Object[10][5],
                 new String[]{
-                    "No.", "Date", "Category", "Solved"
+                    "No.", "Date", "Category", "Solved", "Comment"
                 }
         ));
         this.setVisible(true);
@@ -210,15 +210,23 @@ public class VisitorFrame extends javax.swing.JFrame {
 
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "No.", "Date", "Category", "Solved"
+                "No.", "Date", "Category", "Solved", "Comment"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(resultTable);
 
         jLabel2.setText("To");
@@ -421,9 +429,9 @@ public class VisitorFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(dateFromPanel, "No visit history in this query!");
                 } else {
                     resultTable.setModel(new javax.swing.table.DefaultTableModel(
-                            new Object[search.getVisitList().size()][4],
+                            new Object[search.getVisitList().size()][5],
                             new String[]{
-                                "No.", "Date", "Category", "Solved"
+                                "No.", "Date", "Category", "Solved", "Comment"
                             }
                     ));
                     for (int i = 0; i < search.getVisitList().size(); i++) {
@@ -435,15 +443,17 @@ public class VisitorFrame extends javax.swing.JFrame {
                         } else {
                             resultTable.setValueAt("Solved", i, 3);
                         }
+                        //System.out.println(search.getVisitList().get(i).getComment()+"NA");
+                        resultTable.setValueAt(search.getVisitList().get(i).getComment(), i, 4);
                     }
                 }
             } else {
                 ArrayList<model.Visit> visitList = search.searchVisitByCategory(1, categoryComboBox.getSelectedItem().toString(), fromCalStr, toCalStr);
                 System.out.println(visitList.size());
                 resultTable.setModel(new javax.swing.table.DefaultTableModel(
-                        new Object[visitList.size()][4],
+                        new Object[visitList.size()][5],
                         new String[]{
-                            "No.", "Date", "Category", "Solved"
+                            "No.", "Date", "Category", "Solved", "Comment"
                         }
                 ));
                 for (int i = 0; i < visitList.size(); i++) {
@@ -455,6 +465,8 @@ public class VisitorFrame extends javax.swing.JFrame {
                     } else {
                         resultTable.setValueAt("Solved", i, 3);
                     }
+                    //System.out.println(search.getVisitList().get(i).getComment()+"NA");
+                    resultTable.setValueAt(search.getVisitList().get(i).getComment(), i, 4);
                 }
             }
 
@@ -478,9 +490,9 @@ public class VisitorFrame extends javax.swing.JFrame {
         categoryComboBox.setSelectedIndex(0);
 
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[10][4],
+                new Object[10][5],
                 new String[]{
-                    "No.", "Date", "Category", "Solved"
+                    "No.", "Date", "Category", "Solved", "Comment"
                 }
         ));
     }//GEN-LAST:event_clearButtonActionPerformed

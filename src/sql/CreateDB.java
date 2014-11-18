@@ -41,7 +41,7 @@ public class CreateDB {
 //            s.executeQuery("DROP table student");
 //            s.executeQuery("DROP table visit");
         } catch (SQLException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -96,7 +96,7 @@ public class CreateDB {
         try {
             s2 = conn.createStatement();
             s2.executeUpdate("create table visit(VisitID int, StudentID int, "
-                    + "date date, category varchar(40),solved int)");
+                    + "date date, category varchar(40),solved int, comments varchar(100))");
             conn.commit();
         } catch (SQLException e) {
             System.out.println("Table visit already exists.");
@@ -110,8 +110,8 @@ public class CreateDB {
             conn.commit();
 
             if (!rs.next()) {
-                psInsert = conn.prepareStatement("insert into visit values (?, ?, ?, ?, ?)");
-                String[] Categories = {"stapler", "tuition fee", "complaints", "collect assignments", "meet people"};
+                psInsert = conn.prepareStatement("insert into visit values (?, ?, ?, ?, ?, ?)");
+                String[] Categories = {"stapler", "tuition fee", "complaints", "collect assignments", "meet people", "others"};
 
                 for (int i = 1; i < 1001; i++) {
                     psInsert.setInt(1, i);
@@ -136,6 +136,7 @@ public class CreateDB {
                         solved = 1;
                     }
                     psInsert.setInt(5, solved);
+                    psInsert.setString(6,"");
                     psInsert.executeUpdate();
                 }
                 conn.commit();

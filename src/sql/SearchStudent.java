@@ -50,12 +50,14 @@ public class SearchStudent {
                 Date date = results.getDate("date");
                 String category = results.getString(4);
                 int solved = results.getInt(5);
+                String comment=results.getString(6);
 
                 model.Visit stuVisit = new model.Visit();
                 //stuVisit.setStudentID(ID);
                 stuVisit.setDate(date);
                 stuVisit.setCategory(category);
                 stuVisit.setSolved(solved);
+                stuVisit.setComment(comment);
                 stuVisitList.add(stuVisit);
             }
             results.close();

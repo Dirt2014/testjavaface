@@ -17,6 +17,7 @@ public class Visit {
     Date date;
     String category;
     int solved;
+    String comment;
     
     public int getStudentID() {
         return studentID;
@@ -48,5 +49,13 @@ public class Visit {
 
     public void setSolved(int solved) {
         this.solved = solved;
+    }
+    
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
