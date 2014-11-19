@@ -84,7 +84,7 @@ public class CreateDB {
                     psInsert.setInt(5, age);
                     int index6 = (int) (Math.random() * Nationalities.length);
                     psInsert.setString(6, Nationalities[index6]);
-                    psInsert.setString(7, "photos/"+i+".JPG");
+                    psInsert.setString(7, "E:\\TrainImage\\"+i);
                     psInsert.executeUpdate();
                     conn.commit();
                 }

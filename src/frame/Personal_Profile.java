@@ -54,7 +54,7 @@ public class Personal_Profile extends javax.swing.JFrame {
         this.jT_nationality.setText(thisstudent.getNationality());
         
 //        URL url = Personal_Profile.class.getClassLoader().getResource("photos/1.jpg");
-        ImageIcon image = new ImageIcon("photos/1.jpg");
+        ImageIcon image = new ImageIcon(thisstudent.getUrl());
         JLabel label = new JLabel("", image, JLabel.CENTER);
         jPanel1.add( label, BorderLayout.CENTER );
             
