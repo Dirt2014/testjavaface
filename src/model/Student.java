@@ -31,10 +31,12 @@ public class Student {
         this.program = program;
     }
 
-    public void setStudentID(String gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
-
+    public void setNationality(String na){
+        this.nationality=na;
+    }
     public void setAge(int age) {
         this.age = age;
     }

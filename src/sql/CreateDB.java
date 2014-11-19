@@ -71,7 +71,7 @@ public class CreateDB {
                 String[] Programs = {"MISM", "MSPPM", "MSIT"};
                 String[] Nationalities = {"China", "Japan", "USA", "Korea", "Australia", "India"};
 
-                for (int i = 1; i < 85; i++) {
+                for (int i = 1; i < 14; i++) {
                     psInsert.setInt(1, i);
                     int index1 = (int) (Math.random() * FirstNames.length);
                     int index2 = (int) (Math.random() * LastNames.length);
@@ -84,7 +84,7 @@ public class CreateDB {
                     psInsert.setInt(5, age);
                     int index6 = (int) (Math.random() * Nationalities.length);
                     psInsert.setString(6, Nationalities[index6]);
-                    psInsert.setString(7, "E:\\TrainImage\\"+i);
+                    psInsert.setString(7, "photos/"+i+".JPG");
                     psInsert.executeUpdate();
                     conn.commit();
                 }

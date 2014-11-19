@@ -6,14 +6,19 @@
 
 package frame;
 
+import java.awt.BorderLayout;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -27,23 +32,8 @@ public class Personal_Profile extends javax.swing.JFrame {
     private static Properties props = new Properties();
     private static String dbName = "FaceRecognizeDB";
     private static int student_id;
-    
-    private static void createConnection()
-    {
-        try
-        {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
-            //Get a connection
-            conn = DriverManager.getConnection("jdbc:derby:" + dbName
-                    + ";create=true", props); 
-            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                                      ResultSet.CONCUR_UPDATABLE);
-        }
-        catch (Exception except)
-        {
-            except.printStackTrace();
-        }
-    }
+
+   
     /**
      * Creates new form Profile
      * @param student_id
@@ -51,17 +41,22 @@ public class Personal_Profile extends javax.swing.JFrame {
     public Personal_Profile(int id) {
         student_id=id;
         initComponents();
-        createConnection();
-        try {
+        jPanel1.setLayout(new BorderLayout());
+        
             //To get personal information from the database
-            ResultSet rs = stmt.executeQuery("select * from student where studentid="+student_id);
+        model.Student thisstudent= sql.StudentInfo.getInfo(student_id);
             
-            rs.next();
-            this.jT_name.setText(rs.getString("name"));
-            this.jT_age.setText(Integer.toString(rs.getInt("age")));
-            this.jT_gender.setText(rs.getString("gender"));
-            this.jT_program.setText(rs.getString("program"));
-            this.jT_nationality.setText(rs.getString("nationalities"));
+            
+        this.jT_name.setText(thisstudent.getName());
+        this.jT_age.setText(Integer.toString(thisstudent.getAge()));
+        this.jT_gender.setText(thisstudent.getGender());
+        this.jT_program.setText(thisstudent.getProgram());
+        this.jT_nationality.setText(thisstudent.getNationality());
+        
+//        URL url = Personal_Profile.class.getClassLoader().getResource("photos/1.jpg");
+        ImageIcon image = new ImageIcon("photos/1.jpg");
+        JLabel label = new JLabel("", image, JLabel.CENTER);
+        jPanel1.add( label, BorderLayout.CENTER );
             
 //            rs = stmt.executeQuery("select * from visit where studentid="+student_id);
 //            
@@ -86,8 +81,6 @@ public class Personal_Profile extends javax.swing.JFrame {
 //            }
 //            ));
 //            
-        } catch (SQLException ex) {
-        }
         
         // Components are uneditable, unless press "edit profile"
         this.jT_name.setEditable(false);
@@ -182,6 +175,11 @@ public class Personal_Profile extends javax.swing.JFrame {
         });
 
         jB_save.setText("Save");
+        jB_save.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jB_saveMouseClicked(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel4.setText("Personal Profile");
@@ -200,7 +198,7 @@ public class Personal_Profile extends javax.swing.JFrame {
         jLabel7.setText("Add an Activity");
         jLabel7.setToolTipText("");
 
-        label1.setText("Activity");
+        label1.setText("Catogory");
 
         jCB_activity.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Stapler", "Tuition Fee", "Complaints", "Collect Assignments", "Meet People", "Others" }));
 
@@ -222,28 +220,23 @@ public class Personal_Profile extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCB_activity, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jB_submit)
                                 .addGap(53, 53, 53))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(54, 54, 54)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jB_edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jB_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jB_edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jB_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(5, 5, 5)
-                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel7))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
                                 .addGap(84, 84, 84)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -277,7 +270,11 @@ public class Personal_Profile extends javax.swing.JFrame {
                                                         .addComponent(jT_program, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                             .addComponent(jT_name))
                                         .addGap(9, 9, 9))
-                                    .addComponent(jScrollPane3))))))
+                                    .addComponent(jScrollPane3)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(111, 111, 111)
+                        .addComponent(jCB_activity, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
@@ -285,49 +282,44 @@ public class Personal_Profile extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(28, 28, 28)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jT_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jT_nationality, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jT_gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jT_age, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jT_program, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel8)))
-                                    .addComponent(jLabel4))
-                                .addGap(120, 120, 120))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(120, 120, 120)))
-                        .addGap(17, 17, 17)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCB_activity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jB_submit))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)))
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jT_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jT_nationality, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jT_gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jT_age, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jT_program, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8)))
+                            .addComponent(jLabel4))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addComponent(jB_edit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jB_save)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jB_save)))
+                .addGap(25, 25, 25)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCB_activity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jB_submit))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
@@ -346,15 +338,40 @@ public class Personal_Profile extends javax.swing.JFrame {
         this.jT_program.setEditable(true);
         this.jT_nationality.setEditable(true);
         this.jB_save.setEnabled(true);
+        this.jB_edit.setEnabled(false);
     }//GEN-LAST:event_jB_editMouseClicked
 
     private void jB_submitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jB_submitMouseClicked
         // TODO add your handling code here:
         VisitorFrame vf= new VisitorFrame(student_id);
         this.setVisible(false);
+        
         vf.setVisible(true);
         vf.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_jB_submitMouseClicked
+
+    private void jB_saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jB_saveMouseClicked
+        // TODO add your handling code here:
+        
+        this.jB_edit.setEnabled(true);
+        model.Student student= new model.Student();
+        student.setAge(Integer.parseInt(this.jT_age.getText()));
+        student.setStudentID(student_id);
+        student.setName(this.jT_name.getText());
+        student.setNationality(this.jT_nationality.getText());
+        student.setProgram(this.jT_program.getText());
+        student.setGender(this.jT_gender.getText());
+        
+        sql.StudentInfo.setInfo(student);
+        
+        this.jT_name.setEditable(false);
+        this.jT_age.setEditable(false);
+        this.jT_gender.setEditable(false);
+        this.jT_program.setEditable(false);
+        this.jT_nationality.setEditable(false);
+        this.jB_save.setEnabled(false);
+    }//GEN-LAST:event_jB_saveMouseClicked
 
     /**
      * @param args the command line arguments
