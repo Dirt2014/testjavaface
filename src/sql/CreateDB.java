@@ -70,7 +70,7 @@ public class CreateDB {
                 String[] Programs = {"MISM", "MSPPM", "MSIT"};
                 String[] Nationalities = {"China", "Japan", "USA", "Korea", "Australia", "India"};
 
-                for (int i = 1; i < 85; i++) {
+                for (int i = 1; i < 14; i++) {
                     psInsert.setInt(1, i);
                     int index1 = (int) (Math.random() * FirstNames.length);
                     int index2 = (int) (Math.random() * LastNames.length);
