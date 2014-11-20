@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Nov 19 02:35:25 CST 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0149-c3a6-bea6-00000414b8b0 
+Thu Nov 20 00:20:22 CST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0149-c851-779d-00000413c430 
 on database directory /Users/jianlin/Documents/Programs/testjavaface/FaceRecognizeDB with class loader sun.misc.Launcher$AppClassLoader@682a0b20 
 Loaded from file:/Users/jianlin/Documents/library/db-derby-10.11.1.1-bin/lib/derby.jar
 java.vendor=Oracle Corporation

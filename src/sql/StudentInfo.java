@@ -43,7 +43,6 @@ public class StudentInfo {
             student.setProgram(rs.getString("program"));
             student.setNationality(rs.getString("nationalities"));
             student.setUrl(rs.getString("url"));
-            //conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -60,6 +59,7 @@ public class StudentInfo {
 //        }
         
         try {
+            
             String sql="update student set name='"+student.getName()
                     +"', age="+student.getAge()
                     +", nationalities='"+student.getNationality()
@@ -69,13 +69,33 @@ public class StudentInfo {
             int result = stmt.executeUpdate(sql);
             
            if (result >0) JOptionPane.showConfirmDialog(null, "Successfully saved!");
-          // conn.close();
+//           stmt.close();
+//           conn.close();
         }
         catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
     
+    public static void addVisit(model.Visit stuvisit){
+//        String s = Calendar.YEAR+
+        try{
+            rs=stmt.executeQuery("select * from visit");
+            rs.last();
+            String sql="insert into visit("
+                    + "visitid, studentid, date, category, solved, comments)"
+                    + " values ("+(rs.getInt("visitid")+1)
+                    +", "+stuvisit.getStudentID()
+                    +", '"+stuvisit.getDate()
+                    +"', '"+stuvisit.getCategory()
+                    +"', "+stuvisit.getSolved()
+                    +", '"+stuvisit.getComments()
+                    + "')";
+        }
+        catch(Exception e){
+            
+        }
+    }
     
     
 }

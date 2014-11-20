@@ -9,11 +9,13 @@ package frame;
 import java.awt.BorderLayout;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -180,6 +182,11 @@ public class Personal_Profile extends javax.swing.JFrame {
                 jB_saveMouseClicked(evt);
             }
         });
+        jB_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jB_saveActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel4.setText("Personal Profile");
@@ -343,6 +350,15 @@ public class Personal_Profile extends javax.swing.JFrame {
 
     private void jB_submitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jB_submitMouseClicked
         // TODO add your handling code here:
+        model.Visit visit =new model.Visit();
+        visit.setStudentID(student_id);
+        visit.setCategory((String) this.jCB_activity.getSelectedItem());
+        visit.setComments(this.jT_comments.getText());
+        visit.setSolved(0);
+        visit.setDate(new java.sql.Date(new java.util.Date().getTime()));
+        
+        sql.StudentInfo.addVisit(visit);
+        
         VisitorFrame vf= new VisitorFrame(student_id);
         this.setVisible(false);
         
@@ -372,6 +388,10 @@ public class Personal_Profile extends javax.swing.JFrame {
         this.jT_nationality.setEditable(false);
         this.jB_save.setEnabled(false);
     }//GEN-LAST:event_jB_saveMouseClicked
+
+    private void jB_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB_saveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jB_saveActionPerformed
 
     /**
      * @param args the command line arguments
